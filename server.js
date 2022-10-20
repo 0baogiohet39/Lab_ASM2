@@ -7,11 +7,17 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 // This tells Express we’re using EJS as the template engine
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
+
+app.get("/add-products", (req, res) => { 
+    res.render("addProduct"); 
+});
 
 // Make sure you place body-parser before your CRUD handlers!
-app.use(bodyParser.urlencoded({ extended: true }))
-const connectionString = 'mongodb+srv://dpminh:Abcd1234@cluster0.h8fy9pi.mongodb.net/?retryWrites=true&w=majority'
+app.use(bodyParser.urlencoded({ extended: true }));
+const connectionString = 'mongodb+srv://dpminh:Abcd1234@cluster0.h8fy9pi.mongodb.net/?retryWrites=true&w=majority';
 
 // server -> connect -> MongoDB
 MongoClient.connect(connectionString, (err, client) => {
@@ -32,7 +38,7 @@ MongoClient.connect(connectionString, (err, client) => {
         // server -> insert -> data -> from client 
         quotesCollection.insertOne(req.body)
             .then(result => {
-                
+
                 // server -> result -> console 
                 console.log(result)
 
@@ -47,20 +53,20 @@ MongoClient.connect(connectionString, (err, client) => {
     // server -> find -> database -> collection -> quotes -> documents
     app.get('/', (req, res) => {
         db.collection('quotes').find().toArray()
-        .then(results => {
-        
-            //console.log(results)
-            // server -> index.ejs -> client 
-            res.render('index.ejs', { quotes: results })
-        
-        })
-        .catch(error => console.error(error))
-        
+            .then(results => {
+
+                //console.log(results)
+                // server -> index.ejs -> client 
+                res.render('index.ejs', { quotes: results })
+
+            })
+            .catch(error => console.error(error))
+
     })
 
 
     // server -> listen -> port -> PORT
-    app.listen(PORT, function() {
+    app.listen(PORT, function () {
         console.log('listening on ' + PORT)
     })
 
