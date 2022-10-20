@@ -12,7 +12,7 @@ app.set('views', './views');
 app.get("/add-products", (req, res) => { 
     res.render("addProduct"); 
 });
-
+ 
 // Make sure you place body-parser before your CRUD handlers!
 app.use(bodyParser.urlencoded({ extended: true }));
 const connectionString = 'mongodb+srv://dpminh:Abcd1234@cluster0.h8fy9pi.mongodb.net/?retryWrites=true&w=majority';
